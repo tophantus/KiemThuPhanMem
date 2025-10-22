@@ -5,6 +5,7 @@ def shipping_fee(weight, distance, hasVoucher=False):
     if (distance < 1 or distance > 100):
         return "Khoảng cách không hợp lệ"
 
+
     if distance <= 5:
         fee = 20000
     elif distance <= 20:
@@ -78,11 +79,24 @@ def test_decision_cases():
         result = shipping_fee(w, d, v)
         print(f"{tid}: input=({w},{d},{v}) → result={result}, expected={expected} → {'PASS' if result==expected else 'FAIL'}")
 
+def test_data_flow():
+    cases = [
+        # PathID, weight, distance, hasVoucher, expected
+        ("L1", 20, 40, True, 40000),   # >20km
+        ("L2", 20, 5, True, 16000),    # <=5km
+        ("L3", 20, 15, True, 24000),   # <=20km
+    ]
+
+    print("\n===== Data Flow Test Cases =====")
+    for pid, w, d, v, expected in cases:
+        result = shipping_fee(w, d, v)
+        print(f"{pid}: input=({w},{d},{v}) → result={result}, expected={expected} → {'PASS' if result==expected else 'FAIL'}")
 
 def main():
     test_bva()
     test_decision_table()
     test_decision_cases()
+    test_data_flow()
 
 if __name__ == "__main__":
     main()
